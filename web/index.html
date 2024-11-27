@@ -107,10 +107,10 @@
 
     <!-- 3. Beispiel: Neues Element erstellen -->
     <div class="demo-bereich">
-        <h2>3️⃣ Neuen Thomas erstellen</h2>
+        <h2>3️⃣ Thomas Fehler eintragen</h2>
         <div class="code">document.createElement('div')</div>
         
-        <button onclick="elementHinzufuegen()">Neuen Thomas hinzufügen</button>
+        <button onclick="elementHinzufuegen()">Neuer Fehler Eintrag</button>
         <div id="container"></div>
         <p id="erklaerung3"></p>
     </div>
@@ -174,7 +174,7 @@
             const neuesElement = document.createElement('div');
             
             neuesElement.className = 'element';
-            neuesElement.textContent = 'Thomas ' + elementZaehler++ + ' Fehler';
+            neuesElement.textContent = 'Thomas ' + elementZaehler++ + '. Fehler';
             neuesElement.onclick = function() {
                 this.remove();
                 const erklaerung = document.getElementById('erklaerung3');
