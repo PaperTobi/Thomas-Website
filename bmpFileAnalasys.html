@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BMP File Format Reference</title>
+    <style>
+        /* Dark mode color palette and reset */
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --text-primary: #e0e0e0;
+            --accent-purple: #BB86FC;
+            --accent-teal: #03DAC6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: var(--accent-purple);
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hex-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .hex-table th, .hex-table td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .hex-table th {
+            background-color: #2C2C2C;
+            color: var(--accent-purple);
+        }
+
+        .hex-values {
+            word-wrap: break-word;
+            white-space: normal;
+            max-width: 300px;
+            color: var(--accent-teal);
+        }
+
+        .hex-block {
+            background-color: #2C2C2C;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 5px;
+            color: var(--accent-teal);
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .hex-table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>BMP File Format Reference</h1>
+
+    <div class="section">
+        <h2>Complete Hexadecimal File Structure (10x10 White Bitmap)</h2>
+        
+        <h3>Complete Hex Dump</h3>
+        <div class="hex-block">
+            42,4D,76,01,00,00,00,00,00,00,36,00,00,00,28,00,00,00,0A,00,00,00,0A,00,00,00,01,00,18,00,00,00,00,00,40,01,00,00,C4,0E,00,00,C4,0E,00,00,00,00,00,00,00,00,00,00,
+            FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,00,00,
+            FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,00,00,
+            FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,00,00
+        </div>
+
+        <h3>Detailed Overview</h3>
+        <table class="hex-table">
+            <tr>
+                <th>Section</th>
+                <th>Hex Values</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td>"BM" Signature</td>
+                <td class="hex-values">42,4D</td>
+                <td>
+                    - ASCII characters "BM"<br>
+                    - 42 = "B" (Hex)<br>
+                    - 4D = "M" (Hex)<br>
+                    - Identifies file as a BMP image
+                </td>
+            </tr>
+            <tr>
+                <td>File Size</td>
+                <td class="hex-values">76,01,00,00</td>
+                <td>
+                    - Little-endian 32-bit integer<br>
+                    - 0176h = 374 (Decimal)<br>
+                    - Total file size in bytes
+                </td>
+            </tr>
+            <tr>
+                <td>Reserved Bytes</td>
+                <td class="hex-values">00,00,00,00</td>
+                <td>
+                    - Reserved for application-specific metadata<br>
+                    - Typically set to zero<br>
+                    - Not used in standard BMP files
+                </td>
+            </tr>
+            <tr>
+                <td>Pixel Data Offset</td>
+                <td class="hex-values">36,00,00,00</td>
+                <td>
+                    - Little-endian 32-bit integer<br>
+                    - 36h = 54 (Decimal)<br>
+                    - Byte offset to start of pixel array
+                </td>
+            </tr>
+            <tr>
+                <td>Info Header (14-53)</td>
+                <td class="hex-values">28,00,00,00,0A,00,00,00,0A,00,00,00,01,00,18,00,00,00,00,00,40,01,00,00,C4,0E,00,00,C4,0E,00,00,00,00,00,00,00,00,00,00</td>
+                <td>
+                    - Header Size: 40 Bytes<br>
+                    - Width: 10 Pixels<br>
+                    - Height: 10 Pixels<br>
+                    - Color Depth: 24 Bit
+                </td>
+            </tr>
+            <tr>
+                <td>Pixel Data (from Byte 54)</td>
+                <td class="hex-values">FF,FF,FF (Repeated)</td>
+                <td>
+                    - White Pixels (RGB: 255,255,255)<br>
+                    - Bottom-Up Storage<br>
+                    - Padding with 00 at Line End
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Technical Interpretation</h2>
+        <ul>
+            <li>Completely uncompressed 10x10 pixel white Bitmap</li>
+            <li>24-bit color depth allows direct RGB color storage</li>
+            <li>Each pixel requires 3 bytes (Blue, Green, Red)</li>
+            <li>Line length padded to 4-byte boundaries</li>
+        </ul>
+    </div>
+</body>
+</html>
