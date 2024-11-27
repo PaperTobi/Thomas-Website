@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM Beispiele - Einfach erklärt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .demo-bereich {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .code {
+            background: #f6f8fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .hervorgehoben {
+            background: #ffeb3b;
+            transition: background-color 0.5s;
+        }
+
+        .element {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .aktiv {
+            border: 2px solid #4CAF50;
+            background: #e8f5e9;
+        }
+
+        .ausgewaehlt {
+            background: #bbdefb;
+        }
+
+        #animation-bereich div {
+            transition: all 0.3s;
+        }
+
+        .erfolg {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .warnung {
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>DOM-Manipulation leicht gemacht! 🚀</h1>
+    
+    <!-- 1. Beispiel: Element per ID finden -->
+    <div class="demo-bereich">
+        <h2>1️⃣ Ein Element per ID finden</h2>
+        <div class="code">document.getElementById('mein-text')</div>
+        
+        <div id="mein-text" class="element">
+            Ich bin ein Text mit der ID "mein-text"
+        </div>
+        <button onclick="textHervorheben()">Text hervorheben</button>
+        <p id="erklaerung1"></p>
+    </div>
+
+    <!-- 2. Beispiel: Elemente per Klasse finden -->
+    <div class="demo-bereich">
+        <h2>2️⃣ Mehrere Elemente per Klasse finden</h2>
+        <div class="code">document.getElementsByClassName('gruppen-element')</div>
+        
+        <div class="gruppen-element element">Element 1</div>
+        <div class="gruppen-element element">Element 2</div>
+        <div class="gruppen-element element">Element 3</div>
+        <button onclick="gruppeHervorheben()">Gruppe hervorheben</button>
+        <p id="erklaerung2"></p>
+    </div>
+
+    <!-- 3. Beispiel: Neues Element erstellen -->
+    <div class="demo-bereich">
+        <h2>3️⃣ Neues Element erstellen</h2>
+        <div class="code">document.createElement('div')</div>
+        
+        <button onclick="elementHinzufuegen()">Neues Element hinzufügen</button>
+        <div id="container"></div>
+        <p id="erklaerung3"></p>
+    </div>
+
+    <!-- 4. Beispiel: Element verändern -->
+    <div class="demo-bereich">
+        <h2>4️⃣ Element verändern</h2>
+        <div class="code">element.style.fontSize = '24px'</div>
+        
+        <div id="aender-text" class="element">
+            Dieser Text kann verändert werden
+        </div>
+        <button onclick="textVergroessern()">Text vergrößern</button>
+        <button onclick="textFarbe()">Farbe ändern</button>
+        <button onclick="textZuruecksetzen()">Zurücksetzen</button>
+        <p id="erklaerung4"></p>
+    </div>
+
+    <script>
+        // Funktion 1: Element per ID finden und hervorheben
+        function textHervorheben() {
+            const text = document.getElementById('mein-text');
+            text.classList.toggle('hervorgehoben');
+            
+            const erklaerung = document.getElementById('erklaerung1');
+            if(text.classList.contains('hervorgehoben')) {
+                erklaerung.textContent = '✅ Das Element wurde über seine ID gefunden und hervorgehoben!';
+                erklaerung.className = 'erfolg';
+            } else {
+                erklaerung.textContent = 'Die Hervorhebung wurde entfernt.';
+                erklaerung.className = '';
+            }
+        }
+
+        // Funktion 2: Elemente per Klasse finden und hervorheben
+        function gruppeHervorheben() {
+            const elemente = document.getElementsByClassName('gruppen-element');
+            let wurdenHervorgehoben = false;
+            
+            for(let element of elemente) {
+                element.classList.toggle('ausgewaehlt');
+                if(element.classList.contains('ausgewaehlt')) {
+                    wurdenHervorgehoben = true;
+                }
+            }
+            
+            const erklaerung = document.getElementById('erklaerung2');
+            if(wurdenHervorgehoben) {
+                erklaerung.textContent = '✅ Alle Elemente mit der Klasse wurden gefunden und hervorgehoben!';
+                erklaerung.className = 'erfolg';
+            } else {
+                erklaerung.textContent = 'Die Hervorhebung wurde entfernt.';
+                erklaerung.className = '';
+            }
+        }
+
+        // Funktion 3: Neues Element erstellen
+        let elementZaehler = 1;
+        function elementHinzufuegen() {
+            const container = document.getElementById('container');
+            const neuesElement = document.createElement('div');
+            
+            neuesElement.className = 'element';
+            neuesElement.textContent = 'Neues Element ' + elementZaehler++;
+            neuesElement.onclick = function() {
+                this.remove();
+                const erklaerung = document.getElementById('erklaerung3');
+                erklaerung.textContent = '❌ Element wurde durch Klick entfernt!';
+                erklaerung.className = 'warnung';
+            };
+            
+            container.appendChild(neuesElement);
+            
+            const erklaerung = document.getElementById('erklaerung3');
+            erklaerung.textContent = '✅ Neues Element wurde erstellt! (Klicke es zum Entfernen)';
+            erklaerung.className = 'erfolg';
+        }
+
+        // Funktion 4: Element verändern
+        let istGross = false;
+        let farbIndex = 0;
+        const farben = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'];
+
+        function textVergroessern() {
+            const text = document.getElementById('aender-text');
+            istGross = !istGross;
+            text.style.fontSize = istGross ? '24px' : '16px';
+            
+            const erklaerung = document.getElementById('erklaerung4');
+            erklaerung.textContent = istGross ? 
+                '✅ Text wurde vergrößert!' : 
+                'Text wurde wieder verkleinert.';
+            erklaerung.className = istGross ? 'erfolg' : '';
+        }
+
+        function textFarbe() {
+            const text = document.getElementById('aender-text');
+            text.style.color = farben[farbIndex];
+            farbIndex = (farbIndex + 1) % farben.length;
+            
+            const erklaerung = document.getElementById('erklaerung4');
+            erklaerung.textContent = '✅ Textfarbe wurde geändert!';
+            erklaerung.className = 'erfolg';
+        }
+
+        function textZuruecksetzen() {
+            const text = document.getElementById('aender-text');
+            text.style.fontSize = '16px';
+            text.style.color = 'black';
+            istGross = false;
+            
+            const erklaerung = document.getElementById('erklaerung4');
+            erklaerung.textContent = 'Text wurde zurückgesetzt.';
+            erklaerung.className = '';
+        }
+    </script>
+</body>
+</html>
