@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Dynamische Liste</title>
+<style>
+.liste-container {
+padding: 20px;
+border: 1px solid #ccc;
+}
+li {
+cursor: pointer;
+padding: 5px;
+}
+li:hover {
+background-color: #f0f0f0;
+}
+</style>
+</head>
+<body>
+<div class="liste-container">
+<h2>Klicke auf die Liste für neue Einträge</h2>
+<!-- Die Liste wird per JavaScript hier eingef¸gt -->
+</div>
+<script>
+const liste = document.createElement('ul');
+const listenpunkt = document.createElement('li');
+listenpunkt.textContent = 'Erster Eintrag';
+liste.appendChild(listenpunkt);
+document.body.appendChild(liste);
+liste.addEventListener('click', function(ereignis) {
+const neuerPunkt = document.createElement('li');
+neuerPunkt.textContent = 'Neuer Eintrag';
+liste.appendChild(neuerPunkt);
+});
+</script>
+</body>
+</html>

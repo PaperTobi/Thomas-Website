@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>DOM-Manipulation</title>
+<style>
+.container { padding: 20px; }
+.blau { color: rgb(21, 255, 0); }
+</style>
+</head>
+<body>
+<div id="hauptcontainer" class="container">
+<h2>DOM-Manipulation Übung</h2>
+<div id="inhalt-container"></div>
+<button id="schaltflaeche">Klick mich</button>
+</div>
+<script>
+
+let newDiv = document.createElement("div");
+newDiv.textContent = "Neuer Inhalt";
+
+
+let inhaltContainer = document.getElementById("inhalt-container");
+inhaltContainer.appendChild(newDiv);
+
+
+let hauptContainer = document.getElementById("hauptcontainer");
+hauptContainer.classList.add("blau");
+
+
+let schaltflaeche = document.getElementById("schaltflaeche");
+schaltflaeche.addEventListener("click", function() {
+  alert("Schaltfläche wurde geklickt!");
+});
+</script>
+
+</body>
+</html>

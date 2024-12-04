@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Formularvalidierung</title>
+<style>
+.formular-container {
+max-width: 400px;
+margin: 20px auto;
+padding: 20px;
+border: 1px solid #ccc;
+}
+.fehler-container {
+color: red;
+margin-top: 10px;
+}
+.eingabefeld {
+margin: 10px 0;
+width: 100%;
+padding: 5px;
+}
+</style>
+</head>
+<body>
+<div class="formular-container">
+<form id="anmeldeFormular">
+<div>
+<label for="benutzername">Benutzername:</label>
+<input type="text" id="benutzername" class="eingabefeld">
+</div>
+<div>
+<label for="passwort">Passwort:</label>
+<input type="password" id="passwort" class="eingabefeld">
+</div>
+<button type="submit">Anmelden</button>
+</form>
+<div class="fehler-container"></div>
+</div>
+<script>
+  
+</script>
+</body>
+</html>
