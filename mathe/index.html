@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Statistik Fachbegriffe - Interaktive Übersicht</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .calculator-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .calculator-section h2 {
+        color: #495057;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .calculator {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .input-group label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #495057;
+      }
+
+      .input-group input {
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      .input-group input:focus {
+        outline: none;
+        border-color: #4facfe;
+      }
+
+      .calculate-btn {
+        grid-column: 1 / -1;
+        padding: 15px 30px;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+
+      .calculate-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .results {
+        grid-column: 1 / -1;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+
+      .results h3 {
+        color: #495057;
+        margin-bottom: 15px;
+      }
+
+      .result-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .result-item:last-child {
+        border-bottom: none;
+      }
+
+      .concepts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+        padding: 30px;
+      }
+
+      .concept-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-left: 5px solid #4facfe;
+      }
+
+      .concept-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      .concept-card h3 {
+        color: #495057;
+        margin-bottom: 15px;
+        font-size: 1.4em;
+      }
+
+      .definition {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border-left: 3px solid #28a745;
+      }
+
+      .formula {
+        background: #fff3cd;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-family: "Courier New", monospace;
+        border-left: 3px solid #ffc107;
+      }
+
+      .example {
+        background: #d1ecf1;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 3px solid #17a2b8;
+      }
+
+      .formula-text {
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #856404;
+      }
+
+      @media (max-width: 768px) {
+        .calculator {
+          grid-template-columns: 1fr;
+        }
+
+        .concepts-grid {
+          grid-template-columns: 1fr;
+          padding: 15px;
+        }
+
+        .header h1 {
+          font-size: 2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>📊 Statistik Fachbegriffe</h1>
+        <p>Interaktive Übersicht mit Rechner</p>
+      </div>
+
+      <div class="calculator-section">
+        <h2>🧮 Statistik-Rechner</h2>
+        <div class="calculator">
+          <div class="input-group">
+            <label for="dataInput">Datenwerte (durch Komma getrennt):</label>
+            <input
+              type="text"
+              id="dataInput"
+              placeholder="z.B. 2,3,1,4,2,3,2"
+            />
+          </div>
+          <div class="input-group">
+            <label for="dataInfo">Anzahl Werte:</label>
+            <input type="text" id="dataInfo" readonly />
+          </div>
+          <button class="calculate-btn" onclick="calculateStatistics()">
+            Berechnen
+          </button>
+          <div class="results" id="results" style="display: none">
+            <h3>📈 Ergebnisse:</h3>
+            <div id="resultsList"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="concepts-grid">
+        <div class="concept-card">
+          <h3>📊 Mittelwert (Arithmetisches Mittel)</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Der Mittelwert ist die Summe aller
+            Werte geteilt durch die Anzahl der Werte.
+          </div>
+          <div class="formula">
+            <div class="formula-text">Formel: x̄ = (Σxᵢ) / n</div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Werte: 2,3,1,4,2,3,2<br />
+            <strong>Rechnung:</strong> (2+3+1+4+2+3+2) ÷ 7 = 17 ÷ 7 = 2,43
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>🎯 Erwartungswert</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Der theoretisch zu erwartende
+            Mittelwert bei unendlich vielen Wiederholungen eines
+            Zufallsexperiments.
+          </div>
+          <div class="formula">
+            <div class="formula-text">Formel: E(X) = Σ(xᵢ · P(xᵢ))</div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Würfel werfen<br />
+            <strong>Rechnung:</strong> E(X) = 1·(1/6) + 2·(1/6) + ... + 6·(1/6)
+            = 3,5
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>📈 Varianz</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Maß für die Streuung der Werte um den
+            Mittelwert.
+          </div>
+          <div class="formula">
+            <div class="formula-text">Formel: σ² = Σ(xᵢ - x̄)² / n</div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Werte: 2,4,6 (Mittelwert = 4)<br />
+            <strong>Rechnung:</strong> σ² = [(2-4)² + (4-4)² + (6-4)²] ÷ 3 =
+            2,67
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>🏆 Modalwert (Modus)</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Der am häufigsten vorkommende Wert in
+            einer Datenreihe.
+          </div>
+          <div class="formula">
+            <div class="formula-text">
+              Formel: Wird durch Auszählen bestimmt
+            </div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Werte: 2,3,2,5,2,7,3<br />
+            <strong>Lösung:</strong> Modalwert = 2 (kommt 3x vor)
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>📐 Standardabweichung</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Quadratwurzel der Varianz; gibt die
+            durchschnittliche Abweichung vom Mittelwert an.
+          </div>
+          <div class="formula">
+            <div class="formula-text">Formel: σ = √(σ²)</div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Aus Varianz 2,67<br />
+            <strong>Rechnung:</strong> σ = √2,67 = 1,63
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>📏 Spannweite (Range)</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Differenz zwischen dem größten und
+            kleinsten Wert.
+          </div>
+          <div class="formula">
+            <div class="formula-text">Formel: R = xₘₐₓ - xₘᵢₙ</div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Werte: 12,8,15,3,11<br />
+            <strong>Rechnung:</strong> R = 15 - 3 = 12
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>🎯 Median</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Der mittlere Wert einer der Größe nach
+            geordneten Datenreihe.
+          </div>
+          <div class="formula">
+            <div class="formula-text">
+              Formel: Mittlerer Wert (ungerade Anzahl) oder Mittelwert der
+              beiden mittleren Werte (gerade Anzahl)
+            </div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Werte: 3,7,8,12,15<br />
+            <strong>Lösung:</strong> Median = 8 (mittlerer Wert)
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>📊 Quartile</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Werte, die eine geordnete Datenreihe
+            in vier gleiche Teile teilen.
+          </div>
+          <div class="formula">
+            <div class="formula-text">
+              Q1: 25%-Perzentil, Q2: 50%-Perzentil (Median), Q3:
+              75%-Perzentil
+            </div>
+          </div>
+          <div class="example">
+            <strong>Beispiel:</strong> Werte: 2,4,6,8,10,12,14,16<br />
+            <strong>Lösung:</strong> Q1 = 5, Q2 = 9, Q3 = 13
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>📏 Verhältnisskala</h3>
+          <div class="definition">
+            <strong>Definition:</strong> Höchstes Skalenniveau mit natürlichem
+            Nullpunkt und gleichen Abständen zwischen den Werten.
+          </div>
+          <div class="formula">
+            <div class="formula-text">
+              Eigenschaften: Natürlicher Nullpunkt, Verhältnisse interpretierbar
+            </div>
+          </div>
+          <div class="example">
+            <strong>Beispiele:</strong> Gewicht (kg), Länge (m), Zeit (s),
+            Temperatur (Kelvin)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function calculateStatistics() {
+        const input = document.getElementById("dataInput").value;
+        const dataInfo = document.getElementById("dataInfo");
+        const results = document.getElementById("results");
+        const resultsList = document.getElementById("resultsList");
+
+        if (!input.trim()) {
+          alert("Bitte geben Sie Datenwerte ein!");
+          return;
+        }
+
+        try {
+          const data = input
+            .split(",")
+            .map((x) => parseFloat(x.trim()))
+            .filter((x) => !isNaN(x));
+
+          if (data.length === 0) {
+            alert("Keine gültigen Zahlen gefunden!");
+            return;
+          }
+
+          dataInfo.value = data.length + " Werte";
+
+          // Berechnungen
+          const mean = data.reduce((a, b) => a + b) / data.length;
+          const sortedData = [...data].sort((a, b) => a - b);
+          const median = calculateMedian(sortedData);
+          const variance =
+            data.reduce((sum, x) => sum + Math.pow(x - mean, 2), 0) /
+            data.length;
+          const stdDev = Math.sqrt(variance);
+          const range = Math.max(...data) - Math.min(...data);
+          const mode = calculateMode(data);
+          const quartiles = calculateQuartiles(sortedData);
+
+          // Ergebnisse anzeigen
+          resultsList.innerHTML = `
+                    <div class="result-item">
+                        <span><strong>Mittelwert:</strong></span>
+                        <span>${mean.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span><strong>Median:</strong></span>
+                        <span>${median}</span>
+                    </div>
+                    <div class="result-item">
+                        <span><strong>Modalwert:</strong></span>
+                        <span>${mode}</span>
+                    </div>
+                    <div class="result-item">
+                        <span><strong>Varianz:</strong></span>
+                        <span>${variance.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span><strong>Standardabweichung:</strong></span>
+                        <span>${stdDev.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span><strong>Spannweite:</strong></span>
+                        <span>${range}</span>
+                    </div>
+                    <div class="result-item">
+                        <span><strong>Q1 (25%):</strong></span>
+                        <span>${quartiles.q1}</span>
+                    </div>
+                    <div class="result-item">
+                        <span><strong>Q3 (75%):</strong></span>
+                        <span>${quartiles.q3}</span>
+                    </div>
+                `;
+
+          results.style.display = "block";
+        } catch (error) {
+          alert("Fehler bei der Berechnung: " + error.message);
+        }
+      }
+
+      function calculateMedian(sortedData) {
+        const n = sortedData.length;
+        if (n % 2 === 0) {
+          return ((sortedData[n / 2 - 1] + sortedData[n / 2]) / 2).toFixed(2);
+        } else {
+          return sortedData[Math.floor(n / 2)];
+        }
+      }
+
+      function calculateMode(data) {
+        const frequency = {};
+        data.forEach((value) => {
+          frequency[value] = (frequency[value] || 0) + 1;
+        });
+
+        let maxFreq = 0;
+        let modes = [];
+
+        for (let value in frequency) {
+          if (frequency[value] > maxFreq) {
+            maxFreq = frequency[value];
+            modes = [value];
+          } else if (frequency[value] === maxFreq) {
+            modes.push(value);
+          }
+        }
+
+        if (maxFreq === 1) {
+          return "Kein Modalwert";
+        }
+
+        return modes.join(", ");
+      }
+
+      function calculateQuartiles(sortedData) {
+        const n = sortedData.length;
+        const q1Index = Math.floor((n + 1) / 4) - 1;
+        const q3Index = Math.floor((3 * (n + 1)) / 4) - 1;
+
+        return {
+          q1:
+            q1Index >= 0 && q1Index < n
+              ? sortedData[q1Index]
+              : "Nicht berechenbar",
+          q3:
+            q3Index >= 0 && q3Index < n
+              ? sortedData[q3Index]
+              : "Nicht berechenbar",
+        };
+      }
+
+      // Event listener für Enter-Taste
+      document
+        .getElementById("dataInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            calculateStatistics();
+          }
+        });
+    </script>
+  </body>
+</html>
